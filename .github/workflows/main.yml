@@ -30,16 +30,17 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       with:
         args: >
+          -Dsonar.host.url=https://sonarcloud.io/
           -Dsonar.organization=thechetantalwar
           -Dsonar.projectKey=thechetantalwar_actions-demo
   notify:
     runs-on: ubuntu-latest
     if: always()
-    needs: build
+    needs: [build,scan]
     steps:
       - name: Send a Notification
         id: notify
         uses: thechetantalwar/slack-notify@v2
         with:
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK }}
-          message: "Github Action Completed for ${{ github.repository	 }} with Build Number ${{ github.run_number }} and the outcome is  ${{ needs.build.result }}."
+          message: "Github Action Completed for ${{ github.repository	 }} with Build Number ${{ github.run_number }} and the outcome for build is ${{ needs.build.result }} and scan is ${{ need.scan.result }}."
