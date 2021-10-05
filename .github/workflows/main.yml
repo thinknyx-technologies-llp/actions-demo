@@ -1,9 +1,9 @@
 name: Build Docker Image, Push it to Github Packages and Send notification to Slack Afterwards
 on:
   push:
-    branches: [ master ]
+    branches: [ master,dev ]
   pull_request:
-    branches: [ master ]
+    branches: [ master,dev ]
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -20,6 +20,14 @@ jobs:
     - name: Image Push
       id: step_onr
       run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$GITHUB_RUN_NUMBER
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Analyze with SonarCloud
+      uses: sonarsource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   notify:
     runs-on: ubuntu-latest
     if: always()
