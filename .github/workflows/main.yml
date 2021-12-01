@@ -11,9 +11,15 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Action  
+        uses: actions/checkout@v2
+        with:
+          repository: thinknyx-technologies-llp/notify
+          token: ${{ secrets.REPO_TOKEN }}
+          path: ./
       - name: Send a Notification
         id: notify
-        uses: thinknyx-technologies-llp/notify@v1
+        uses: ./
         with:
           slack_webhook_url: ${{ secrets.SLACK_WEBHOOK }}
           message: "Github Action Completed for ${{ github.repository	 }} with Build Number ${{ github.run_number }} and the outcome is  ${{ needs.build.result }}."
