@@ -18,7 +18,7 @@ jobs:
           token: ${{ secrets.REPO_TOKEN }}
           path: ./
       - name: Docker Login
-        run: echo  ${{ secrets.REPO_TOKEN }} | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
+        run: echo  ${{ secrets.REPO_TOKEN }} | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin && docker pull ghcr.io/thinknyx-technologies-llp/notify:latest
       - name: Send a Notification
         id: notify
         uses: ./
