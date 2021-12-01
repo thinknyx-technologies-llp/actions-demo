@@ -17,11 +17,12 @@ jobs:
           repository: thinknyx-technologies-llp/notify
           token: ${{ secrets.REPO_TOKEN }}
           path: ./
-      - name: Docker Login
-        run: echo  ${{ secrets.REPO_TOKEN }} | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin && docker pull ghcr.io/thinknyx-technologies-llp/notify:latest
       - name: Send a Notification
         id: notify
         uses: ./
         with:
-          teams_webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+          teams_webhook_url: ${{ secrets.TEAMS_HOOK }}
           message: "Github Action Completed for ${{ github.repository	 }} with Build Number ${{ github.run_number }} and the outcome is  ${{ needs.build.result }}."
+          docker_token:  ${{ secrets.REPO_TOKEN }}
+          docker_username: ${{ github.actor }}
+          
