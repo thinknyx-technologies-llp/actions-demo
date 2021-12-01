@@ -17,6 +17,8 @@ jobs:
           repository: thinknyx-technologies-llp/notify
           token: ${{ secrets.REPO_TOKEN }}
           path: ./
+      - name: Docker Login
+        run: echo  ${{ secrets.REPO_TOKEN }} | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
       - name: Send a Notification
         id: notify
         uses: ./
